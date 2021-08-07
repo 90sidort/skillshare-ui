@@ -20,7 +20,7 @@ const CategoriesList = () => {
   const { categories, error, loading } = categoriesState;
   useEffect(() => {
     dispatch(getCategoriesAction());
-  }, []);
+  }, [dispatch]);
 
   return (
     <React.Fragment>

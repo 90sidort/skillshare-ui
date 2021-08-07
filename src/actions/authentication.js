@@ -30,3 +30,7 @@ export const loginUserAction = (user) => async (dispatch) => {
     });
   }
 };
+
+export const logoutUserAction = () => (dispatch) => {
+  dispatch({ type: "LOGOUT_USER_SUCCESS" });
+};

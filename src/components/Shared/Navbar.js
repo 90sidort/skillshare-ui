@@ -8,11 +8,15 @@ import {
 } from "@material-ui/core";
 import { VpnKey as VpnKeyIcon } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import useStylesNavbar from "../../styles/navbar.style";
+import { logoutUserAction } from "../../actions/authentication";
 
-const Navbar = () => {
+const Navbar = (props) => {
+  const { token } = props;
   const classes = useStylesNavbar();
+  const dispatch = useDispatch();
 
   return (
     <AppBar position="static">
@@ -29,11 +33,22 @@ const Navbar = () => {
         </Typography>
 
         <section className={classes.rightToolbar}>
-          <Link to="/signin">
-            <IconButton color="inherit" aria-label="Sing">
+          {!token && (
+            <Link to="/signin">
+              <IconButton color="inherit" aria-label="Sing">
+                <VpnKeyIcon />
+              </IconButton>
+            </Link>
+          )}
+          {token && (
+            <IconButton
+              color="inherit"
+              aria-label="Sing"
+              onClick={() => dispatch(logoutUserAction())}
+            >
               <VpnKeyIcon />
             </IconButton>
-          </Link>
+          )}
         </section>
       </Toolbar>
     </AppBar>

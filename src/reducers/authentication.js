@@ -1,14 +1,13 @@
-export const authentication = (
-  state = {
-    user: {
-      userId: null,
-      token: null,
-    },
-    loading: false,
-    error: null,
+const initialState = {
+  user: {
+    userId: null,
+    token: null,
   },
-  action
-) => {
+  loading: false,
+  error: null,
+};
+
+export const authentication = (state = initialState, action) => {
   switch (action.type) {
     case "LOGIN_USER_REQUEST":
     case "REGISTER_USER_REQUEST":
@@ -33,6 +32,11 @@ export const authentication = (
         loading: false,
         error: null,
         user: { userId: action.payload.userId, token: action.payload.token },
+      };
+    case "LOGOUT_USER_SUCCESS":
+      return {
+        ...state,
+        ...initialState,
       };
     default:
       return state;
