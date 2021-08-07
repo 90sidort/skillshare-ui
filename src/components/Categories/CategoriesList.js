@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  List,
-  ListItem,
-  Divider,
-  ListItemText,
-  Typography,
-} from "@material-ui/core";
+import { List, ListItem, ListItemText, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import Spinner from "../Shared/Spinner";
@@ -17,13 +11,22 @@ const CategoriesList = () => {
   const classes = useStylesList();
   const dispatch = useDispatch();
   const categoriesState = useSelector((state) => state.categories);
+  const {
+    user: { token },
+  } = useSelector((state) => state.authentication);
   const { categories, error, loading } = categoriesState;
   useEffect(() => {
-    dispatch(getCategoriesAction());
+    dispatch(getCategoriesAction(token));
   }, [dispatch]);
 
   return (
     <React.Fragment>
+      <Typography variant="h3" gutterBottom>
+        What would you like to learn today?
+      </Typography>
+      <Typography variant="subtitle1" gutterBottom>
+        Select category of skills that you'd like to master.
+      </Typography>
       {error && (
         <AppModal open={true} title={"Error"} message={error.message} />
       )}
@@ -33,7 +36,7 @@ const CategoriesList = () => {
           {categories.map((category) => {
             return (
               <div>
-                <ListItem alignItems="flex-start" key={category.id}>
+                <ListItem key={category.id} className={classes.item}>
                   <ListItemText
                     primary={`${category.name}`}
                     secondary={
@@ -51,7 +54,6 @@ const CategoriesList = () => {
                     }
                   />
                 </ListItem>
-                <Divider />
               </div>
             );
           })}

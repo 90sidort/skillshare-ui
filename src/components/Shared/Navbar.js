@@ -6,7 +6,10 @@ import {
   IconButton,
   Menu as MenuIcon,
 } from "@material-ui/core";
-import { VpnKey as VpnKeyIcon } from "@material-ui/icons";
+import {
+  VpnKey as VpnKeyIcon,
+  ExitToApp as LogoutIcon,
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -46,7 +49,7 @@ const Navbar = (props) => {
               aria-label="Sing"
               onClick={() => dispatch(logoutUserAction())}
             >
-              <VpnKeyIcon />
+              <LogoutIcon />
             </IconButton>
           )}
         </section>
