@@ -1,10 +1,9 @@
 import { combineReducers } from "redux";
-import auth from "./auth";
-import message from "./message";
+
 import { categories } from "./category";
+import { authentication } from "./authentication";
 
 export default combineReducers({
-  auth,
+  authentication,
   categories,
-  message,
 });

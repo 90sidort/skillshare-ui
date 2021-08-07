@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useHistory } from "react-router";
@@ -17,15 +17,16 @@ import { Link as RouterLink } from "react-router-dom";
 
 import useStyles from "../../styles/sign.style";
 import { validationSchemaSignUp as validationSchema } from "../../validators/sign.validator";
-import { register } from "../../actions/auth";
+import { registerUserAction } from "../../actions/authentication";
 import Spinner from "../Shared/Spinner";
 import { initialValuesSignup as initialValues } from "../../utils/initialValues";
+import AppModal from "../Shared/Modal";
 
 const SignUp = () => {
   const classes = useStyles();
-  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
-  const { message } = useSelector((state) => state.message);
+  const userState = useSelector((state) => state.authentication);
+  const { error, loading } = userState;
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues,
@@ -33,31 +34,17 @@ const SignUp = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      setLoading(true);
-      dispatch(
-        register(
-          values.username,
-          values.name,
-          values.surname,
-          values.email,
-          values.password,
-          values.retype,
-          values.about
-        )
-      )
+      dispatch(registerUserAction(values))
         .then((res) => {
-          console.log(res);
-          setLoading(false);
-          // history.push("/");
+          history.push("/");
         })
-        .catch(() => {
-          setLoading(false);
-        });
+        .catch(() => {});
     },
   });
   return (
     <React.Fragment>
-      {isLoading && <Spinner />}
+      {error && <AppModal open={true} title={"Error"} message={error} />}
+      {loading && <Spinner />}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>

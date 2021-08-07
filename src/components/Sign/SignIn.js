@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { useHistory } from "react-router";
@@ -17,16 +17,16 @@ import { Link as RouterLink } from "react-router-dom";
 
 import useStyles from "../../styles/sign.style";
 import { validationSchemaSignIn as validationSchema } from "../../validators/sign.validator";
-import { login } from "../../actions/auth";
+import { loginUserAction } from "../../actions/authentication";
 import Spinner from "../Shared/Spinner";
 import { initialValuesSignin as initialValues } from "../../utils/initialValues";
+import AppModal from "../Shared/Modal";
 
 const SignIn = () => {
   const classes = useStyles();
-  const [isLoading, setLoading] = useState(false);
   const history = useHistory();
-  const { isLoggedIn } = useSelector((state) => state.auth);
-  const { message } = useSelector((state) => state.message);
+  const userState = useSelector((state) => state.authentication);
+  const { error, loading } = userState;
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues,
@@ -34,23 +34,20 @@ const SignIn = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      setLoading(true);
-      dispatch(login(values.username, values.password))
+      dispatch(loginUserAction(values))
         .then((res) => {
-          setLoading(false);
-          // history.push("/");
+          history.push("/");
         })
-        .catch(() => {
-          setLoading(false);
-        });
+        .catch(() => {});
     },
   });
   return (
     <React.Fragment>
-      {isLoading && <Spinner />}
+      {error && <AppModal open={true} title={"Error"} message={error} />}
+      {loading && <Spinner />}
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        {!isLoading && (
+        {!loading && (
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockOutlined />
