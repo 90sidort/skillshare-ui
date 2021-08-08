@@ -1,6 +1,13 @@
 import React, { useEffect } from "react";
-import { List, ListItem, ListItemText, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from "@material-ui/core";
 
 import Spinner from "../Shared/Spinner";
 import AppModal from "../Shared/Modal";
@@ -12,7 +19,7 @@ const CategoriesList = () => {
   const dispatch = useDispatch();
   const categoriesState = useSelector((state) => state.categories);
   const {
-    user: { token },
+    user: { token, admin },
   } = useSelector((state) => state.authentication);
   const { categories, error, loading } = categoriesState;
   useEffect(() => {
@@ -53,6 +60,12 @@ const CategoriesList = () => {
                       </React.Fragment>
                     }
                   />
+                  {admin && (
+                    <Link to={`/category/${category.id}`}>
+                      <Button>Edit</Button>
+                    </Link>
+                  )}
+                  {admin && <Button>Delete</Button>}
                 </ListItem>
               </div>
             );

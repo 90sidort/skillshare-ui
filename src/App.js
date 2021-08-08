@@ -12,6 +12,7 @@ import SignIn from "./components/Sign/SignIn";
 import Navbar from "./components/Shared/Navbar";
 import CategoriesList from "./components/Categories/CategoriesList";
 import SignUp from "./components/Sign/SignUp";
+import CategoryEdit from "./components/Categories/CategoryEdit";
 
 function App() {
   const userState = useSelector((state) => state.authentication);
@@ -28,6 +29,9 @@ function App() {
         </Route>
         <Route path="/signup" exact={true}>
           <Redirect to="/" />
+        </Route>
+        <Route path="/category/:id" exact={true}>
+          <CategoryEdit />
         </Route>
       </Switch>
     );

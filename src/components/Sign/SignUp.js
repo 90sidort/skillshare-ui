@@ -36,9 +36,12 @@ const SignUp = () => {
       setSubmitting(true);
       dispatch(registerUserAction(values))
         .then((res) => {
-          history.push("/");
+          console.log(res, 1);
+          // history.push("/");
         })
-        .catch(() => {});
+        .catch((err) => {
+          console.log(err, 2);
+        });
     },
   });
   return (

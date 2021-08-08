@@ -1,8 +1,15 @@
+const currentUser = localStorage.getItem("user")
+  ? JSON.parse(localStorage.getItem("user"))
+  : null;
+
+const noUser = {
+  userId: null,
+  token: null,
+  admin: null,
+};
+
 const initialState = {
-  user: {
-    userId: null,
-    token: null,
-  },
+  user: currentUser ? currentUser : noUser,
   loading: false,
   error: null,
 };
@@ -19,11 +26,17 @@ export const authentication = (state = initialState, action) => {
     case "REGISTER_USER_SUCCESS":
       return {
         loading: false,
-        user: { userId: action.payload.id, token: action.payload.token },
+        user: {
+          userId: action.payload.id,
+          token: action.payload.token,
+          admin: false,
+        },
       };
     case "LOGIN_USER_FAILED":
     case "REGISTER_USER_FAILED":
+      console.log(333, "crash");
       return {
+        user: initialState.user,
         loading: false,
         error: action.payload,
       };
@@ -31,12 +44,16 @@ export const authentication = (state = initialState, action) => {
       return {
         loading: false,
         error: null,
-        user: { userId: action.payload.userId, token: action.payload.token },
+        user: {
+          userId: action.payload.userId,
+          token: action.payload.token,
+          admin: action.payload.admin,
+        },
       };
     case "LOGOUT_USER_SUCCESS":
       return {
         ...state,
-        ...initialState,
+        user: noUser,
       };
     default:
       return state;
