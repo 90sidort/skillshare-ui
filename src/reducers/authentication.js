@@ -34,7 +34,6 @@ export const authentication = (state = initialState, action) => {
       };
     case "LOGIN_USER_FAILED":
     case "REGISTER_USER_FAILED":
-      console.log(333, "crash");
       return {
         user: initialState.user,
         loading: false,

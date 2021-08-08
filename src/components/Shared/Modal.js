@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal, Backdrop, Fade } from "@material-ui/core";
+import { Modal, Backdrop, Fade } from "@material-ui/core";
 
 import useStylesModal from "../../styles/modal.style";
 

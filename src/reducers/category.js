@@ -1,5 +1,9 @@
+const currentCategories = localStorage.getItem("categories")
+  ? JSON.parse(localStorage.getItem("categories"))
+  : null;
+
 const initialState = {
-  categories: [],
+  categories: currentCategories ? currentCategories.categories : [],
   category: {},
   loading: false,
   error: null,

@@ -22,6 +22,7 @@ const CategoriesList = () => {
     user: { token, admin },
   } = useSelector((state) => state.authentication);
   const { categories, error, loading } = categoriesState;
+
   useEffect(() => {
     dispatch(getCategoriesAction(token));
   }, [dispatch]);

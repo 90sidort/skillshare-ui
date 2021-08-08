@@ -15,7 +15,6 @@ export const registerUserAction = (user) => async (dispatch) => {
     localStorage.setItem("user", JSON.stringify(registeredUser));
     dispatch({ type: "REGISTER_USER_SUCCESS", payload: response.data });
   } catch (err) {
-    console.log(9999, err.response);
     const message = getErrorMessage(err.response);
     dispatch({
       type: "REGISTER_USER_FAILED",
@@ -46,5 +45,6 @@ export const loginUserAction = (user) => async (dispatch) => {
 
 export const logoutUserAction = () => (dispatch) => {
   localStorage.removeItem("user");
+  localStorage.removeItem("categories");
   dispatch({ type: "LOGOUT_USER_SUCCESS" });
 };

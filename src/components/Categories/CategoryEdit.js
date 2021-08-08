@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardContent,
@@ -15,7 +15,7 @@ import useStylesCard from "../../styles/card.style";
 import Spinner from "../Shared/Spinner";
 import AppModal from "../Shared/Modal";
 import { validationCategory as validationSchema } from "../../validators/category.validator";
-import { getCategoryAction } from "../../actions/category";
+import { updateCategoryAction } from "../../actions/category";
 import { useFormik } from "formik";
 
 const CategoryEdit = () => {
@@ -30,8 +30,6 @@ const CategoryEdit = () => {
     user: { token },
   } = useSelector((state) => state.authentication);
   const category = categories.find((category) => category.id === id);
-  console.log(category);
-
   const formik = useFormik({
     initialValues: { name: category.name },
     validationSchema,
@@ -39,17 +37,14 @@ const CategoryEdit = () => {
     validateOnBlur: true,
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
-      //   dispatch(loginUserAction(values))
-      //     .then((res) => {
-      //       history.push("/");
-      //     })
-      //     .catch(() => {});
+      dispatch(updateCategoryAction(token, id, values))
+        .then(() => {
+          history.push("/");
+        })
+        .catch(() => {});
     },
   });
 
-  // useEffect(() => {
-  //   dispatch(getCategoryAction(token, id));
-  // }, [dispatch]);
   return (
     <React.Fragment>
       {error && (

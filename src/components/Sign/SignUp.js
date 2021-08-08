@@ -35,13 +35,10 @@ const SignUp = () => {
     onSubmit: async (values, { setSubmitting }) => {
       setSubmitting(true);
       dispatch(registerUserAction(values))
-        .then((res) => {
-          console.log(res, 1);
-          // history.push("/");
+        .then(() => {
+          history.push("/");
         })
-        .catch((err) => {
-          console.log(err, 2);
-        });
+        .catch(() => {});
     },
   });
   return (
