@@ -19,14 +19,19 @@ import { getCategoryAction } from "../../actions/category";
 import { useFormik } from "formik";
 
 const CategoryEdit = () => {
-  const id = useLocation().pathname.split("category/")[1];
+  const id = parseInt(useLocation().pathname.split("category/")[1]);
   const history = useHistory();
   const classes = useStylesCard();
   const dispatch = useDispatch();
-  const { category, loading, error } = useSelector((state) => state.categories);
+  const { categories, loading, error } = useSelector(
+    (state) => state.categories
+  );
   const {
     user: { token },
   } = useSelector((state) => state.authentication);
+  const category = categories.find((category) => category.id === id);
+  console.log(category);
+
   const formik = useFormik({
     initialValues: { name: category.name },
     validationSchema,
@@ -42,10 +47,9 @@ const CategoryEdit = () => {
     },
   });
 
-  useEffect(() => {
-    dispatch(getCategoryAction(token, id));
-  }, [dispatch]);
-  console.log(id, category);
+  // useEffect(() => {
+  //   dispatch(getCategoryAction(token, id));
+  // }, [dispatch]);
   return (
     <React.Fragment>
       {error && (
@@ -56,10 +60,10 @@ const CategoryEdit = () => {
         <Card className={classes.root}>
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {`Editing category "${category.name}"`}
+              {`Editing category ${category.name}`}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              {`This category is related to ${category.skills.length}`}
+              {`This category is related to ${category.skillCount}`}
             </Typography>
             <form className={classes.form} onSubmit={formik.handleSubmit}>
               <Grid container spacing={2} className={classes.fields}>

@@ -22,6 +22,7 @@ export const categories = (state = initialState, action) => {
       };
     case "GET_CATEGORY_SUCCESS":
       return {
+        ...state,
         loading: false,
         category: action.payload,
       };
