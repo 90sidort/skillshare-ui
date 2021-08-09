@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -12,46 +12,47 @@ import {
 import Spinner from "../Shared/Spinner";
 import AppModal from "../Shared/Modal";
 import useStylesList from "../../styles/list.style";
-import { getCategoriesAction } from "../../actions/category";
+import { getSkillsAction } from "../../actions/skill";
 
-const CategoriesList = () => {
+const SkillsList = () => {
+  const cid = parseInt(useLocation().search.split("=")[1]);
   const classes = useStylesList();
   const dispatch = useDispatch();
   const categoriesState = useSelector((state) => state.categories);
+  const skillsState = useSelector((state) => state.skills);
   const {
     user: { token, admin },
   } = useSelector((state) => state.authentication);
-  const { categories, error, loading } = categoriesState;
-
+  const { categories } = categoriesState;
+  const {
+    skills: { data },
+    loading,
+    error,
+  } = skillsState;
   useEffect(() => {
-    dispatch(getCategoriesAction(token));
+    dispatch(getSkillsAction(token, cid));
   }, [dispatch]);
   return (
     <React.Fragment>
-      {admin && (
-        <Link to={`/addCategory`}>
-          <Button>Add category</Button>
-        </Link>
-      )}
       <Typography variant="h3" gutterBottom>
         What would you like to learn today?
       </Typography>
       <Typography variant="subtitle1" gutterBottom>
-        Select category of skills that you'd like to master.
+        Select skill to browse offers.
       </Typography>
       {error && (
         <AppModal open={true} title={"Error"} message={error.message} />
       )}
       {loading && <Spinner />}
-      {categories && !error && !loading && (
+      {data && !error && !loading && (
         <List className={classes.root}>
-          {categories.map((category) => {
+          {data.map((skill) => {
             return (
               <div>
-                <Link to={`/skills?categoryId=${category.id}`}>
-                  <ListItem key={category.id} className={classes.item}>
+                <Link to={`/skills/${skill.id}`}>
+                  <ListItem key={skill.id} className={classes.item}>
                     <ListItemText
-                      primary={`${category.name}`}
+                      primary={`${skill.name}`}
                       secondary={
                         <React.Fragment>
                           <Typography
@@ -60,14 +61,13 @@ const CategoriesList = () => {
                             className={classes.inline}
                             color="textPrimary"
                           >
-                            Skills count
+                            {skill.description}
                           </Typography>
-                          {` — ${category.skillCount}`}
                         </React.Fragment>
                       }
                     />
                     {admin && (
-                      <Link to={`/category/${category.id}`}>
+                      <Link to={`/category/${skill.id}`}>
                         <Button>Edit</Button>
                       </Link>
                     )}
@@ -83,4 +83,4 @@ const CategoriesList = () => {
   );
 };
 
-export default CategoriesList;
+export default SkillsList;

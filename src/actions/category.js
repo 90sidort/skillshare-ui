@@ -1,14 +1,43 @@
 import axios from "axios";
+import getErrorMessage from "../utils/errorMessage";
+
+import { checkStorage, saveToStorage } from "../utils/storage";
 
 const api = process.env.REACT_APP_BACKEND_URL;
+
+export const addCategoryAction =
+  (token, update) => async (dispatch, getState) => {
+    dispatch({ type: "ADD_CATEGORY_REQUEST" });
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${api}/category`,
+        data: { ...update },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const storedCategories = checkStorage("categories");
+      storedCategories.categories.push({
+        id: response.data.id,
+        name: response.data.name,
+        skillCount: 0,
+      });
+      saveToStorage("categories", { categories: storedCategories.categories });
+      dispatch({
+        type: "GET_CATEGORIES_SUCCESS",
+        payload: storedCategories.categories,
+      });
+    } catch (err) {
+      const message = getErrorMessage(err.response);
+      dispatch({ type: "GET_CATEGORIES_FAILED", payload: message });
+      throw new Error(message);
+    }
+  };
 
 export const getCategoriesAction = (token) => async (dispatch) => {
   dispatch({ type: "GET_CATEGORIES_REQUEST" });
   try {
     let categories;
-    const storedCategories = localStorage.getItem("categories")
-      ? JSON.parse(localStorage.getItem("categories"))
-      : null;
+    const storedCategories = checkStorage("categories");
     if (storedCategories) categories = storedCategories;
     else {
       const response = await axios.get(`${api}/category`, {
@@ -17,7 +46,7 @@ export const getCategoriesAction = (token) => async (dispatch) => {
       categories = {
         categories: response.data,
       };
-      localStorage.setItem("categories", JSON.stringify(categories));
+      saveToStorage("categories", categories);
     }
     dispatch({
       type: "GET_CATEGORIES_SUCCESS",
@@ -44,10 +73,7 @@ export const updateCategoryAction =
           (category) => category.id === parseInt(cid)
         );
         newCategories[updateIndex].name = updates.name;
-        localStorage.setItem(
-          "categories",
-          JSON.stringify({ categories: newCategories })
-        );
+        saveToStorage("categories", { categories: newCategories });
         dispatch({ type: "GET_CATEGORIES_SUCCESS", payload: newCategories });
       } else throw new Error();
     } catch (err) {

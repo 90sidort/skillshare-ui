@@ -12,3 +12,5 @@ export const initialValuesSignup = {
   retype: "",
   about: "",
 };
+
+export const initialValuesCategory = { name: "" };

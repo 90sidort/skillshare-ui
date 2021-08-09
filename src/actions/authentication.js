@@ -46,5 +46,6 @@ export const loginUserAction = (user) => async (dispatch) => {
 export const logoutUserAction = () => (dispatch) => {
   localStorage.removeItem("user");
   localStorage.removeItem("categories");
+  localStorage.removeItem("skills");
   dispatch({ type: "LOGOUT_USER_SUCCESS" });
 };

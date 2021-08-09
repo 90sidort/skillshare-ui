@@ -14,6 +14,7 @@ export const categories = (state = initialState, action) => {
     case "GET_CATEGORY_REQUEST":
     case "GET_CATEGORIES_REQUEST":
     case "UPDATE_CATEGORY_REQUEST":
+    case "ADD_CATEGORY_REQUEST":
       return {
         ...state,
         error: null,
@@ -33,6 +34,7 @@ export const categories = (state = initialState, action) => {
     case "GET_CATEGORY_FAILED":
     case "GET_CATEGORIES_FAILED":
       return {
+        user: initialState.categories,
         loading: false,
         error: action.payload,
       };

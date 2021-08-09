@@ -13,6 +13,8 @@ import Navbar from "./components/Shared/Navbar";
 import CategoriesList from "./components/Categories/CategoriesList";
 import SignUp from "./components/Sign/SignUp";
 import CategoryEdit from "./components/Categories/CategoryEdit";
+import SkillsList from "./components/Skills/SkillsList";
+import CategoryAdd from "./components/Categories/CategoryAdd";
 
 function App() {
   const userState = useSelector((state) => state.authentication);
@@ -32,6 +34,12 @@ function App() {
         </Route>
         <Route path="/category/:id" exact={true}>
           <CategoryEdit />
+        </Route>
+        <Route path="/skills" exact={true}>
+          <SkillsList />
+        </Route>
+        <Route path="/addCategory" exact={true}>
+          <CategoryAdd />
         </Route>
       </Switch>
     );
