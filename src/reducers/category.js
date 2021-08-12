@@ -11,10 +11,10 @@ const initialState = {
 
 export const categories = (state = initialState, action) => {
   switch (action.type) {
-    case "GET_CATEGORY_REQUEST":
     case "GET_CATEGORIES_REQUEST":
     case "UPDATE_CATEGORY_REQUEST":
     case "ADD_CATEGORY_REQUEST":
+    case "DELETE_CATEGORY_REQUEST":
       return {
         ...state,
         error: null,
@@ -25,13 +25,6 @@ export const categories = (state = initialState, action) => {
         loading: false,
         categories: action.payload,
       };
-    case "GET_CATEGORY_SUCCESS":
-      return {
-        ...state,
-        loading: false,
-        category: action.payload,
-      };
-    case "GET_CATEGORY_FAILED":
     case "GET_CATEGORIES_FAILED":
       return {
         user: initialState.categories,

@@ -12,7 +12,10 @@ import {
 import Spinner from "../Shared/Spinner";
 import AppModal from "../Shared/Modal";
 import useStylesList from "../../styles/list.style";
-import { getCategoriesAction } from "../../actions/category";
+import {
+  deleteCategoryAction,
+  getCategoriesAction,
+} from "../../actions/category";
 
 const CategoriesList = () => {
   const classes = useStylesList();
@@ -22,6 +25,8 @@ const CategoriesList = () => {
     user: { token, admin },
   } = useSelector((state) => state.authentication);
   const { categories, error, loading } = categoriesState;
+
+  const deleteCategory = (cid) => dispatch(deleteCategoryAction(token, cid));
 
   useEffect(() => {
     dispatch(getCategoriesAction(token));
@@ -48,8 +53,8 @@ const CategoriesList = () => {
           {categories.map((category) => {
             return (
               <div>
-                <Link to={`/skills?categoryId=${category.id}`}>
-                  <ListItem key={category.id} className={classes.item}>
+                <ListItem key={category.id} className={classes.item}>
+                  <Link to={`/skills?categoryId=${category.id}`}>
                     <ListItemText
                       primary={`${category.name}`}
                       secondary={
@@ -66,14 +71,18 @@ const CategoriesList = () => {
                         </React.Fragment>
                       }
                     />
-                    {admin && (
-                      <Link to={`/category/${category.id}`}>
-                        <Button>Edit</Button>
-                      </Link>
-                    )}
-                    {admin && <Button>Delete</Button>}
-                  </ListItem>
-                </Link>
+                  </Link>
+                  {admin && (
+                    <Link to={`/category/${category.id}`}>
+                      <Button>Edit</Button>
+                    </Link>
+                  )}
+                  {admin && (
+                    <Button onClick={() => deleteCategory(category.id)}>
+                      Delete
+                    </Button>
+                  )}
+                </ListItem>
               </div>
             );
           })}

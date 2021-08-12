@@ -81,14 +81,24 @@ export const updateCategoryAction =
     }
   };
 
-export const getCategoryAction = (token, cid) => async (dispatch) => {
-  dispatch({ type: "GET_CATEGORY_REQUEST" });
-  try {
-    const response = await axios.get(`${api}/category/${cid}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    dispatch({ type: "GET_CATEGORY_SUCCESS", payload: response.data });
-  } catch (err) {
-    dispatch({ type: "GET_CATEGORY_FAILED", payload: err });
-  }
-};
+export const deleteCategoryAction =
+  (token, cid) => async (dispatch, getState) => {
+    dispatch({ type: "DELETE_CATEGORY_REQUEST" });
+    try {
+      const response = await axios({
+        method: "DELETE",
+        url: `${api}/category/${cid}`,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.status === 204) {
+        const oldCategories = getState().categories.categories;
+        const newCategories = oldCategories.filter(
+          (category) => category.id !== parseInt(cid)
+        );
+        saveToStorage("categories", { categories: newCategories });
+        dispatch({ type: "GET_CATEGORIES_SUCCESS", payload: newCategories });
+      } else throw new Error();
+    } catch (err) {
+      dispatch({ type: "GET_CATEGORIES_FAILED", payload: err });
+    }
+  };

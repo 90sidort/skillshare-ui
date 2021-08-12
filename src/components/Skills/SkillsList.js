@@ -18,12 +18,12 @@ const SkillsList = () => {
   const cid = parseInt(useLocation().search.split("=")[1]);
   const classes = useStylesList();
   const dispatch = useDispatch();
-  const categoriesState = useSelector((state) => state.categories);
+  const { categories: categories } = useSelector((state) => state.categories);
+  const category = categories.find((cat) => cat.id === cid);
   const skillsState = useSelector((state) => state.skills);
   const {
     user: { token, admin },
   } = useSelector((state) => state.authentication);
-  const { categories } = categoriesState;
   const {
     skills: { data },
     loading,
@@ -32,12 +32,15 @@ const SkillsList = () => {
   useEffect(() => {
     dispatch(getSkillsAction(token, cid));
   }, [dispatch]);
+  console.log(category);
 
   return (
     <React.Fragment>
-      <Typography variant="h3" gutterBottom>
-        What would you like to learn today?
-      </Typography>
+      {
+        <Typography variant="h3" gutterBottom>
+          {`${category.name} skills`}
+        </Typography>
+      }
       <Typography variant="subtitle1" gutterBottom>
         Select skill to browse offers.
       </Typography>
@@ -47,37 +50,41 @@ const SkillsList = () => {
       {loading && <Spinner />}
       {data && !error && !loading && (
         <List className={classes.root}>
-          {data.map((skill) => {
-            return (
-              <div>
-                <Link to={`/skills/${skill.id}`}>
-                  <ListItem key={skill.id} className={classes.item}>
-                    <ListItemText
-                      primary={`${skill.name}`}
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            className={classes.inline}
-                            color="textPrimary"
-                          >
-                            {skill.description}
-                          </Typography>
-                        </React.Fragment>
-                      }
-                    />
-                    {admin && (
-                      <Link to={`/category/${skill.id}`}>
-                        <Button>Edit</Button>
-                      </Link>
-                    )}
-                    {admin && <Button>Delete</Button>}
-                  </ListItem>
-                </Link>
-              </div>
-            );
-          })}
+          {data.length > 0 ? (
+            data.map((skill) => {
+              return (
+                <div>
+                  <Link to={`/skills/${skill.id}`}>
+                    <ListItem key={skill.id} className={classes.item}>
+                      <ListItemText
+                        primary={`${skill.name}`}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              className={classes.inline}
+                              color="textPrimary"
+                            >
+                              {skill.description}
+                            </Typography>
+                          </React.Fragment>
+                        }
+                      />
+                      {admin && (
+                        <Link to={`/category/${skill.id}`}>
+                          <Button>Edit</Button>
+                        </Link>
+                      )}
+                      {admin && <Button>Delete</Button>}
+                    </ListItem>
+                  </Link>
+                </div>
+              );
+            })
+          ) : (
+            <p>No skills found.</p>
+          )}
         </List>
       )}
     </React.Fragment>
