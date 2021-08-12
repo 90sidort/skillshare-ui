@@ -5,6 +5,7 @@ const currentSkills = localStorage.getItem("skills")
 const initialState = {
   skills: currentSkills ? currentSkills.skills : [],
   skill: {},
+  cid: null,
   loading: false,
   error: null,
 };
@@ -20,7 +21,8 @@ export const skills = (state = initialState, action) => {
     case "GET_SKILLS_SUCCESS":
       return {
         loading: false,
-        skills: action.payload,
+        skills: action.payload.skills,
+        cid: action.payload.cid,
       };
     case "GET_SKILLS_FAILED":
       return {

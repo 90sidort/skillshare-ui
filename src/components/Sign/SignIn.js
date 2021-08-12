@@ -26,7 +26,7 @@ const SignIn = () => {
   const classes = useStyles();
   const history = useHistory();
   const userState = useSelector((state) => state.authentication);
-  const { error, loading } = userState;
+  const { user, error, loading } = userState;
   const dispatch = useDispatch();
   const formik = useFormik({
     initialValues,
@@ -36,7 +36,7 @@ const SignIn = () => {
       setSubmitting(true);
       dispatch(loginUserAction(values))
         .then((res) => {
-          history.push("/");
+          if (user.token) history.push("/");
         })
         .catch(() => {});
     },

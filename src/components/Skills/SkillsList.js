@@ -32,6 +32,7 @@ const SkillsList = () => {
   useEffect(() => {
     dispatch(getSkillsAction(token, cid));
   }, [dispatch]);
+
   return (
     <React.Fragment>
       <Typography variant="h3" gutterBottom>
