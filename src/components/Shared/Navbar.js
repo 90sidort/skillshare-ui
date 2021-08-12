@@ -9,6 +9,8 @@ import {
 import {
   VpnKey as VpnKeyIcon,
   ExitToApp as LogoutIcon,
+  Category as CategoryIcon,
+  LocalLibrary as SkillIcon,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -38,15 +40,29 @@ const Navbar = (props) => {
         <section className={classes.rightToolbar}>
           {!token && (
             <Link to="/signin">
-              <IconButton color="inherit" aria-label="Sing">
+              <IconButton color="inherit" aria-label="Singin">
                 <VpnKeyIcon />
+              </IconButton>
+            </Link>
+          )}
+          {token && (
+            <Link to="/skills" style={{ color: "white" }}>
+              <IconButton color="inherit" aria-label="Skills">
+                <SkillIcon />
+              </IconButton>
+            </Link>
+          )}
+          {token && (
+            <Link to="/" style={{ color: "white" }}>
+              <IconButton color="inherit" aria-label="Categories">
+                <CategoryIcon />
               </IconButton>
             </Link>
           )}
           {token && (
             <IconButton
               color="inherit"
-              aria-label="Sing"
+              aria-label="Singout"
               onClick={() => dispatch(logoutUserAction())}
             >
               <LogoutIcon />

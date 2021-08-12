@@ -13,9 +13,11 @@ import Spinner from "../Shared/Spinner";
 import AppModal from "../Shared/Modal";
 import useStylesList from "../../styles/list.style";
 import { getSkillsAction } from "../../actions/skill";
+import { getParameters } from "../../utils/parameter";
 
 const SkillsList = () => {
-  const cid = parseInt(useLocation().search.split("=")[1]);
+  const cid = parseInt(useLocation().search.split("categoryId=")[1]);
+  const url = useLocation().search;
   const classes = useStylesList();
   const dispatch = useDispatch();
   const { categories: categories } = useSelector((state) => state.categories);
@@ -30,17 +32,17 @@ const SkillsList = () => {
     error,
   } = skillsState;
   useEffect(() => {
-    dispatch(getSkillsAction(token, cid));
+    const search = getParameters(url);
+    dispatch(getSkillsAction(token, search));
   }, [dispatch]);
-  console.log(category);
 
   return (
     <React.Fragment>
-      {
+      {category && (
         <Typography variant="h3" gutterBottom>
           {`${category.name} skills`}
         </Typography>
-      }
+      )}
       <Typography variant="subtitle1" gutterBottom>
         Select skill to browse offers.
       </Typography>
