@@ -14,4 +14,10 @@ export const initialValuesSignup = {
   imagepath: "cheems_user2021-08-11T14:04:50.726Z.jpg",
 };
 
+export const initialValuesSkill = {
+  catId: 0,
+  name: "",
+  description: "",
+};
+
 export const initialValuesCategory = { name: "" };

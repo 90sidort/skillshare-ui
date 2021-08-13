@@ -1,9 +1,29 @@
 import axios from "axios";
 import { createURL } from "../utils/createUrl";
+import getErrorMessage from "../utils/errorMessage";
 
 import { checkStorage, saveToStorage } from "../utils/storage";
 
 const api = process.env.REACT_APP_BACKEND_URL;
+
+export const addSkillsAction = (token, update) => async (dispatch) => {
+  dispatch({ type: "ADD_SKILLS_REQUEST" });
+  try {
+    await axios({
+      method: "POST",
+      url: `${api}/skills`,
+      data: { ...update },
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    dispatch({
+      type: "ADD_SKILLS_SUCCESS",
+    });
+  } catch (err) {
+    const message = getErrorMessage(err.response);
+    dispatch({ type: "ADD_SKILLS_FAILED", payload: message });
+    throw new Error(message);
+  }
+};
 
 export const getSkillsAction =
   (token, search) => async (dispatch, getState) => {

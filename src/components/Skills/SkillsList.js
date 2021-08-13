@@ -69,6 +69,11 @@ const SkillsList = () => {
 
   return (
     <React.Fragment>
+      {admin && (
+        <Link to={`/addSkill`}>
+          <Button>Add skill</Button>
+        </Link>
+      )}
       {!cid && (
         <TextField
           id="search"

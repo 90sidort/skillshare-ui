@@ -12,6 +12,7 @@ const initialState = {
 
 export const skills = (state = initialState, action) => {
   switch (action.type) {
+    case "ADD_SKILLS_REQUEST":
     case "GET_SKILLS_REQUEST":
       return {
         ...state,
@@ -24,6 +25,12 @@ export const skills = (state = initialState, action) => {
         skills: action.payload.skills,
         cid: action.payload.cid,
       };
+    case "ADD_SKILLS_SUCCESS":
+      return {
+        ...state,
+        loading: false,
+      };
+    case "ADD_SKILLS_FAILED":
     case "GET_SKILLS_FAILED":
       return {
         loading: false,

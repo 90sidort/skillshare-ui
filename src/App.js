@@ -15,6 +15,7 @@ import SignUp from "./components/Sign/SignUp";
 import CategoryEdit from "./components/Categories/CategoryEdit";
 import SkillsList from "./components/Skills/SkillsList";
 import CategoryAdd from "./components/Categories/CategoryAdd";
+import SkillAdd from "./components/Skills/SkillAdd";
 
 function App() {
   const userState = useSelector((state) => state.authentication);
@@ -40,6 +41,9 @@ function App() {
         </Route>
         <Route path="/addCategory" exact={true}>
           <CategoryAdd />
+        </Route>
+        <Route path="/addSkill" exact={true}>
+          <SkillAdd />
         </Route>
       </Switch>
     );
